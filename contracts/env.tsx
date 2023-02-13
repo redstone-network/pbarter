@@ -1,0 +1,2 @@
+public_key: "0x4bbd2a03a0ad7449eb273f4385ce25e9d2c8d8fe";
+private_key: "7cc0e8fa471aecd0b57c6617459f1b8ad9162d8e40e821d6e7c8f977e32d03bf";
