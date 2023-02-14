@@ -170,6 +170,73 @@ const PBP_ABI: any = [
   {
     inputs: [
       {
+        internalType: "uint256[]",
+        name: "order_ids",
+        type: "uint256[]",
+      },
+    ],
+    name: "getFilterOrders",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "contract ERC3525",
+            name: "base_address",
+            type: "address",
+          },
+          {
+            internalType: "contract ERC3525",
+            name: "target_address",
+            type: "address",
+          },
+          {
+            internalType: "uint256[]",
+            name: "base_nfts",
+            type: "uint256[]",
+          },
+          {
+            internalType: "uint256[]",
+            name: "target_nfts",
+            type: "uint256[]",
+          },
+          {
+            internalType: "uint256[]",
+            name: "base_snfts",
+            type: "uint256[]",
+          },
+          {
+            internalType: "uint256[]",
+            name: "target_snfts",
+            type: "uint256[]",
+          },
+          {
+            internalType: "address",
+            name: "order_owner",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "order_index",
+            type: "uint256",
+          },
+          {
+            internalType: "bool",
+            name: "sell_status",
+            type: "bool",
+          },
+        ],
+        internalType:
+          "struct Pbarter_Protocol.Order[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "order_id",
         type: "uint256",

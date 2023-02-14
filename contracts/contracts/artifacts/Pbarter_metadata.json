@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.9+commit.e5eed63a"
+		"version": "0.8.18+commit.87f61d96"
 	},
 	"language": "Solidity",
 	"output": {
@@ -412,6 +412,17 @@
 			}
 		],
 		"devdoc": {
+			"events": {
+				"Approval(address,address,uint256)": {
+					"details": "Emitted when `owner` enables `approved` to manage the `tokenId` token."
+				},
+				"ApprovalForAll(address,address,bool)": {
+					"details": "Emitted when `owner` enables or disables (`approved`) `operator` to manage all of its assets."
+				},
+				"Transfer(address,address,uint256)": {
+					"details": "Emitted when `tokenId` token is transferred from `from` to `to`."
+				}
+			},
 			"kind": "dev",
 			"methods": {
 				"approve(address,uint256)": {
@@ -472,7 +483,7 @@
 		"compilationTarget": {
 			"contracts/contracts/pbarter721.sol": "Pbarter"
 		},
-		"evmVersion": "london",
+		"evmVersion": "paris",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"

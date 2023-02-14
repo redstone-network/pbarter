@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.9+commit.e5eed63a"
+		"version": "0.8.18+commit.87f61d96"
 	},
 	"language": "Solidity",
 	"output": {
@@ -175,6 +175,72 @@
 			{
 				"inputs": [
 					{
+						"internalType": "uint256[]",
+						"name": "order_ids",
+						"type": "uint256[]"
+					}
+				],
+				"name": "getFilterOrders",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "contract ERC3525",
+								"name": "base_address",
+								"type": "address"
+							},
+							{
+								"internalType": "contract ERC3525",
+								"name": "target_address",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256[]",
+								"name": "base_nfts",
+								"type": "uint256[]"
+							},
+							{
+								"internalType": "uint256[]",
+								"name": "target_nfts",
+								"type": "uint256[]"
+							},
+							{
+								"internalType": "uint256[]",
+								"name": "base_snfts",
+								"type": "uint256[]"
+							},
+							{
+								"internalType": "uint256[]",
+								"name": "target_snfts",
+								"type": "uint256[]"
+							},
+							{
+								"internalType": "address",
+								"name": "order_owner",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "order_index",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bool",
+								"name": "sell_status",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct Pbarter_Protocol.Order[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "uint256",
 						"name": "order_id",
 						"type": "uint256"
@@ -325,7 +391,7 @@
 		"compilationTarget": {
 			"contracts/contracts/pbarter_protocol.sol": "Pbarter_Protocol"
 		},
-		"evmVersion": "london",
+		"evmVersion": "paris",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -466,11 +532,11 @@
 			]
 		},
 		"contracts/contracts/pbarter_protocol.sol": {
-			"keccak256": "0x4b7ab3be1613a908740a6b3c3fb951d6a64377ffb61bc787fd9114df210ed94c",
+			"keccak256": "0x753dc5c88f840498d27dd4fc496f35e9720bd4528fd12b9976ebc6039555c765",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://aa780d5a32b4f32f6afb683c4009ea39e19caeb0cfa0f50b1e1e18ab0e44d150",
-				"dweb:/ipfs/QmPajGo5DRR94Hv2vWeQDPD6rfMSvuagF2pzpuumZJQA8h"
+				"bzz-raw://913cdddaab729f156d0dc400d293fd5ff32256267beb02bff5cd83e76cade795",
+				"dweb:/ipfs/QmeF4p2DLZHjideUtXcafBoyYUUjhAJr9PzHRTMGrtT3LE"
 			]
 		}
 	},

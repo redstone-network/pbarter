@@ -85,6 +85,22 @@ contract Pbarter_Protocol {
         return temp_orders;
   }
 
+  // 获取所有交易未完成的订单实例
+
+  function getFilterOrders(uint256[]calldata order_ids) public view returns (Order[] memory ) {
+
+    Order[] memory order_strutcts = new Order[](order_ids.length);
+
+    // 复制所有未完成订单至空数组并返回
+    for (uint64 i =0; i<order_ids.length; i++) 
+    {
+        order_strutcts[i] = order_map[order_ids[i]];
+    }
+    return order_strutcts;
+
+  }
+
+
   // 撤销订单
   function withDrawOrder(uint256 order_id)  public {
 
