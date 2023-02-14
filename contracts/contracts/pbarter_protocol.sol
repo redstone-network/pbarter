@@ -7,10 +7,10 @@ import "@solvprotocol/erc-3525/ERC3525.sol";
 
 contract Pbarter_Protocol { 
 
-  //contract deployer
+  // 合约拥有者
   address public contract_owner;
 
-  // store detailed information of an order
+  // 存储定单详细信息
   struct Order {
     ERC3525  base_address;
     ERC3525  target_address;
@@ -23,24 +23,27 @@ contract Pbarter_Protocol {
     bool  sell_status;
   }
 
-  // record each order in a map
+  // 订单编号 -> 订单
   mapping (uint256 => Order) order_map;
 
-  // store all orders
+  // [订单编号]
   uint256[] orders;
 
-  // current curser
-  uint256 public current_order_number;
+  // 当前未完成的订单总数（游标）
+  uint256 public unfinished_order_numbers;
 
-  // record next order id
+  // 下一个订单编号
   uint256 public next_order_id;
 
-  // record all orders of one's address
+  // 当前用户地址 -> [订单编号]
   mapping (address => uint256[]) owner_orders;
 
+  
   constructor() {
     contract_owner = msg.sender;
-    current_order_number = 0;
+
+    // 初始化和订单数量和订单号
+    unfinished_order_numbers = 0;
     next_order_id = 0;
   }
   
@@ -48,15 +51,19 @@ contract Pbarter_Protocol {
   event BoughtSuccess(address _from,address _destAddr,uint256 order_id);
   event WithDrawSuccess(address _from,address to,uint256 order_id);
 
-  // 获取所有订单,未完成订单游标为 current_order_number 
-  // 即完成订单: [0:current_order_number]
+  // 获取所有订单,未完成订单游标为 unfinished_order_numbers 
+  // 即完成订单: [0:unfinished_order_numbers]
   function allOrders() public view returns (uint256[] memory)  {
     return orders;   
   }
 
   // 查看某个订单
-  function orderStatus(uint256 order_id) public view returns (Order memory) {
+  function getOrder(uint256 order_id) public view returns (Order memory) {
     return order_map[order_id];
+  }
+
+  function orderOwner(uint256 order_id) public view returns (address ) {
+    return order_map[order_id].order_owner;
   }
 
   // 获取当前用户的所有订单
@@ -67,9 +74,11 @@ contract Pbarter_Protocol {
   // 获取所有交易未完成的订单
   function unFinishedOrders() public view returns (uint256[] memory ){
         
-        uint256[] memory temp_orders = new uint[](current_order_number);
+        // 新建空数组
+        uint256[] memory temp_orders = new uint256[](unfinished_order_numbers);
 
-        for (uint64 i =0; i<current_order_number; i++) 
+        // 复制所有未完成订单至空数组并返回
+        for (uint64 i =0; i<unfinished_order_numbers; i++) 
         {
             temp_orders[i] = orders[i];
         }
@@ -79,7 +88,7 @@ contract Pbarter_Protocol {
   // 撤销订单
   function withDrawOrder(uint256 order_id)  public {
 
-    // 确保所有权
+    // 确保订单所有权
     require(
             msg.sender == order_map[order_id].order_owner,
             "You are not owner of the current order"
@@ -132,18 +141,30 @@ contract Pbarter_Protocol {
 
   function swapOrder(uint256 order_id) private {
 
+      // 判断当前订单是否为最后一个未完成的订单
+
+      if (order_id == orders[unfinished_order_numbers-1]) {
+        
+        // 只需更改订单状态，无需交换位置
+        order_map[order_id].sell_status = false;
+
+        // 未成交订单数减1
+        unfinished_order_numbers --;
+      } else {
+
         // 更改订单状态
       order_map[order_id].sell_status = false;
 
       // 更改订单位置,将当前订单替换为订单列表最后一个未成交订单
-      orders[order_map[order_id].order_index] = orders[current_order_number-1];
+      orders[order_map[order_id].order_index] = orders[unfinished_order_numbers-1];
       
       // 更改当前定单到未成交订单队尾
-      orders[current_order_number-1] = order_id;
+      orders[unfinished_order_numbers-1] = order_id;
 
       // 未成交订单数减1
-      current_order_number --;
-      
+      unfinished_order_numbers --;
+
+      } 
   }
 
   // 拿结再确认
@@ -187,7 +208,7 @@ contract Pbarter_Protocol {
     order.sell_status = true;
     
 
-    if (current_order_number == orders.length) {
+    if (unfinished_order_numbers == orders.length) {
       
       addOrder(order);
 
@@ -203,12 +224,12 @@ contract Pbarter_Protocol {
       order_map[next_order_id] = order;
 
       // 换位置/增加订单
-      orders.push(orders[current_order_number]);
+      orders.push(orders[unfinished_order_numbers]);
       // 替换
-      orders[current_order_number] = next_order_id;
+      orders[unfinished_order_numbers] = next_order_id;
       
       // 改变未完成订单的索引
-      order_map[next_order_id].order_index = current_order_number;
+      order_map[next_order_id].order_index = unfinished_order_numbers;
 
       // 改变已完成订单的索引
       order_map[orders[orders.length-1]].order_index = orders[orders.length-1];
@@ -220,7 +241,7 @@ contract Pbarter_Protocol {
       next_order_id ++;
 
       // 未完成订单 +1
-      current_order_number ++;
+      unfinished_order_numbers ++;
 
       //判断合约是否有转账权限
       require(
@@ -249,7 +270,7 @@ contract Pbarter_Protocol {
       next_order_id ++;
 
       // 未完成订单 +1
-      current_order_number ++;
+      unfinished_order_numbers ++;
 
   }
 

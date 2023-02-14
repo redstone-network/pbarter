@@ -470,7 +470,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contract/contracts/pbarter721.sol": "Pbarter"
+			"contracts/contracts/pbarter721.sol": "Pbarter"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -588,7 +588,7 @@
 				"dweb:/ipfs/Qmct36zWXv3j7LZB83uwbg7TXwnZSN1fqHNDZ93GG98bGz"
 			]
 		},
-		"contract/contracts/pbarter721.sol": {
+		"contracts/contracts/pbarter721.sol": {
 			"keccak256": "0xcb9270efd369d48f3d4bd9ba5ce9f0b1250fc77967c9870d49f326a5efe4eb3d",
 			"license": "MIT",
 			"urls": [
