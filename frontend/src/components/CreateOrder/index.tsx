@@ -47,13 +47,14 @@ export default function ({ show, close }: AppProps) {
     try {
       const res = await createOrder(baseAddr, targetAddr, baseId, targetId)
       console.log(res)
-      // toast.success('bind name successful', {
-      //   autoClose: 2000,
-      //   isLoading: false,
-      //   pauseOnFocusLoss: false,
-      //   hideProgressBar: true,
-      //   closeButton: false
-      // })
+      console.log(res)
+      toast.success('create order successful', {
+        autoClose: 2000,
+        isLoading: false,
+        pauseOnFocusLoss: false,
+        hideProgressBar: true,
+        closeButton: false
+      })
     } catch (e) {
       console.log(e)
       toast.error('create order error', {

@@ -34,7 +34,7 @@ function Nav() {
   return (
     <div className="box-border flex items-center w-full h-20 px-4 shadow-md bg-base-100">
       <div className="flex-1">
-        <a className="font-mono text-lg normal-case">PBarter</a>
+        <a className="font-mono text-2xl font-bold normal-case ">PBarter</a>
       </div>
       <div className="flex items-center">
         <div className="dropdown dropdown-end">

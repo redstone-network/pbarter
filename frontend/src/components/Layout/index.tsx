@@ -33,7 +33,7 @@ export default function () {
   return (
     <div className="w-screen h-screen">
       <div className="flex w-screen h-screen font-sans bg-primary-content">
-        <div className="flex flex-col h-full bg-base-100 w-60">
+        <div className="flex flex-col flex-shrink-0 w-1/6 h-full font-mono bg-base-100">
           <div className="flex flex-col w-full px-4 pt-5">
             <button onClick={toggle} className="flex items-center px-10 text-lg text-white rounded hover:bg-primary-focus bg-primary w-25 h-9">
               create order
@@ -53,9 +53,9 @@ export default function () {
             })}
           </ul>
         </div>
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col flex-grow-0 w-5/6">
           <Nav />
-          <div className="flex-1 p-6">
+          <div className="flex-1 p-6 overflow-y-auto">
             <Outlet />
           </div>
         </div>
