@@ -1,4 +1,4 @@
-import { getSFTS_NFTS } from '~/server';
+import { getNFTS } from '~/server';
 
 export default function () {
   
@@ -6,7 +6,7 @@ export default function () {
     <div className="font-mono">
       <div className="pb-4">
         <div className="text-2xl font-medium ">Order List</div>
-        <button onClick={getSFTS_NFTS}>get</button>
+        <button onClick={getNFTS}>get</button>
       </div>
       <div>
         <div className="overflow-x-auto">

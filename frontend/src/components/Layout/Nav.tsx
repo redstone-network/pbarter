@@ -17,13 +17,16 @@ function Nav() {
   const connect = async () => {
     if (typeof ethereum !== 'undefined') {
       const res = await ethereum.request({ method: 'eth_requestAccounts', params: [] });
-      console.log(res)
       window.localStorage.setItem('account', res[0]);
       setAccount(res[0]);
     } else {
       console.log('MetaMask is not installed!');
     }
   };
+  ethereum.on('accountsChanged', function (accounts: string[]) {
+    window.localStorage.setItem('account', accounts[0]);
+    setAccount(accounts[0]);
+  })
   const logout = () => {
     window.localStorage.removeItem('account');
     setAccount('');
@@ -50,7 +53,7 @@ function Nav() {
             </ul>
           ) : null}
         </div>
-        <div className="w-20 truncate font-sans" title={account}>{ account }</div>
+        <div className="w-20 font-sans truncate" title={account}>{ account }</div>
       </div>
     </div>
   );
