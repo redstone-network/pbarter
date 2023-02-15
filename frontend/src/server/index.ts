@@ -11,8 +11,8 @@ import { NftIem } from './type';
 import detectEthereumProvider from '@metamask/detect-provider';
 console.log(11111)
 
-const provider = await detectEthereumProvider();
-console.log(provider)
+const browserProvider = await detectEthereumProvider();
+console.log("#### provider", browserProvider)
 
 const providerRPC = {
   moonbase: {
@@ -26,9 +26,12 @@ const providerRPC = {
 // const provider = new ethers.providers.Web3Provider(window["ethereum"]);
 // console.log(provider.provider.isMetaMask)
 // Contract
-const SFTS_CONT = new ethers.Contract(SFTS_Address, SFTs_ABI, provider)
-const NFTS_CONT = new ethers.Contract(NFTS_Address, NFTS_ABI, provider)
-const PBP_CONT = new ethers.Contract(PBP_Address, PBP_ABI, provider)
+
+const provider = new ethers.providers.Web3Provider(browserProvider);
+
+const SFTS_CONT = new ethers.Contract(SFTS_Address, SFTs_ABI, provider.getSigner())
+const NFTS_CONT = new ethers.Contract(NFTS_Address, NFTS_ABI, provider.getSigner())
+const PBP_CONT = new ethers.Contract(PBP_Address, PBP_ABI, provider.getSigner())
 
 export const ContractList = [
   {
