@@ -45,11 +45,7 @@ export default function ({ show, close }: AppProps) {
 
   const submit = async () => {
     try {
-      const res = createOrder(baseAddr, targetAddr, baseId, targetId).then(res => {
-
-      }).catch((err) => {
-        console.log(err)
-      })
+      const res = await createOrder(baseAddr, targetAddr, baseId, targetId)
       console.log(res)
       // toast.success('bind name successful', {
       //   autoClose: 2000,
@@ -59,6 +55,7 @@ export default function ({ show, close }: AppProps) {
       //   closeButton: false
       // })
     } catch (e) {
+      console.log(e)
       toast.error('create order error', {
         autoClose: 2000,
         isLoading: false,

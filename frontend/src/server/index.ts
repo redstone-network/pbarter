@@ -7,6 +7,12 @@ import NFTS_Address from '~/../../contracts/abi/nfts_address';
 import PBP_ABI from '~/../../contracts/abi/pbarter_protocol_abi';
 import PBP_Address from '~/../../contracts/abi/pbarter_protocol_address';
 import { ethers } from 'ethers';
+import { NftIem } from './type';
+import detectEthereumProvider from '@metamask/detect-provider';
+console.log(11111)
+
+const provider = await detectEthereumProvider();
+console.log(provider)
 
 const providerRPC = {
   moonbase: {
@@ -16,11 +22,9 @@ const providerRPC = {
   },
 };
 // Create ethers provider
-const provider = new ethers.JsonRpcProvider(providerRPC.moonbase.rpc, {
-  chainId: providerRPC.moonbase.chainId,
-  name: providerRPC.moonbase.name,
-});
-
+// console.log(ethers.providers)
+// const provider = new ethers.providers.Web3Provider(window["ethereum"]);
+// console.log(provider.provider.isMetaMask)
 // Contract
 const SFTS_CONT = new ethers.Contract(SFTS_Address, SFTs_ABI, provider)
 const NFTS_CONT = new ethers.Contract(NFTS_Address, NFTS_ABI, provider)
@@ -41,22 +45,48 @@ export const ContractList = [
   }
 ]
 
-export async function getNFTS(contract: any) {
+export async function getSFTS():Promise<NftIem[]> {
   const myAccount = window.localStorage.getItem('account') || '';
-  const sum = await contract.methods.balanceOf(myAccount).call();
-  console.log(sum, myAccount)
-  const nfts = [];
-  for (let i = 0; i++; i < sum) {
-    const res = await contract.methods.tokenOfOwnerByIndex(myAccount, i).call()
-    nfts.push(res)
+  let sum = await SFTS_CONT['balanceOf(address)'](myAccount);
+  sum = Number(sum);
+  const nfts: NftIem[] = [];
+  for (let i = 0; i < sum; i++) {
+    const res = await SFTS_CONT.tokenOfOwnerByIndex(myAccount, i)
+    nfts.push({
+      type: '3525',
+      id: Number(res),
+    })
   }
   return nfts;
 }
-
+export async function getNFTS():Promise<NftIem[]> {
+  const myAccount = window.localStorage.getItem('account') || '';
+  let sum = await NFTS_CONT.balanceOf(myAccount);
+  console.log(Number(sum))
+  sum = Number(sum);
+  const nfts: NftIem[] = [];
+  for (let i = 0; i < sum; i++) {
+    // const res = await SFTS_CONT.tokenOfOwnerByIndex(myAccount, i+1)
+    nfts.push({
+      type: '721',
+      id: i+1,
+    })
+  }
+  return nfts;
+}
 export async function createOrder(baseAddr: string, targetAddr: string, baseId: string, targetId: string) {
   const myAccount = window.localStorage.getItem('account') || '';
-  const res = await PBP_CONT['balanceOf(address)'](myAccount);
-
-  const res = await PBP_CONT.methods.createOrder(baseAddr, targetAddr, [baseId], [targetId]).call();
-  return res;
+  if (baseAddr === SFTS_Address) {
+    console.log('3525', baseAddr)
+    const approveRes = await SFTS_CONT['approve(address, unit256)'](PBP_Address, baseId);
+    const res = await PBP_CONT.createOrder(baseAddr, targetAddr, [baseId], [targetId]);
+    return res
+  } else if (baseAddr === NFTS_Address) {
+    console.log('721', baseAddr)
+    const approveRes = await NFTS_CONT['approve(string, string)'](PBP_Address, baseId);
+    const res = await PBP_CONT.createOrder(baseAddr, targetAddr, [baseId], [targetId]);
+    return res
+  }
 }
+// This function detects most providers injected at window.ethereum
+// import detectEthereumProvider from '@metamask/detect-provider';
