@@ -373,3 +373,4 @@ const PBP_ABI: any = [
     type: "function",
   },
 ];
+export default PBP_ABI;

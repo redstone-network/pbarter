@@ -406,3 +406,4 @@ const NFTs_ABI: any = [
     type: "function",
   },
 ];
+export default NFTs_ABI;

@@ -718,3 +718,4 @@ const SFTs_ABI: any = [
     type: "function",
   },
 ];
+export default SFTs_ABI;
