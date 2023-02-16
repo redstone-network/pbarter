@@ -33,8 +33,8 @@ export default function () {
       fetchData()
     }
   }
-  const buyOrder = async (orderId: string) => {
-    const res = await buy(orderId)
+  const buyOrder = async (address:string,tokenId: string, orderId: string) => {
+    const res = await buy(address, tokenId, orderId)
     if (res) {
       toast.success('buy the order successful', {
         autoClose: 2000,
@@ -67,15 +67,15 @@ export default function () {
             </thead>
             <tbody>
               {list.map((row, index) => (
-                <tr key={index}>
+                <tr key={row.orderId}>
                   <th>{index + 1}</th>
-                  <td>{row.order_index}</td>
+                  <td>{row.orderId}</td>
                   <td>{row.base_address}</td>
-                  <td>{row.base_nfts[0] || row.base_snfts[0]}</td>
+                  <td>{row.base_nfts[0]}</td>
                   <td>{row.target_address}</td>
-                  <td>{row.target_nfts[0] || row.target_snfts[0]}</td>
+                  <td>{row.target_nfts[0]}</td>
                   <td>
-                    <button onClick={() => {buyOrder(row.order_index)}} className="btn btn-xs btn-primary">BUY</button>
+                    <button onClick={() => {buyOrder(row.target_address,row.target_nfts[0], row.orderId)}} className="btn btn-xs btn-primary">BUY</button>
                   </td>
                 </tr>
               ))}
@@ -112,15 +112,15 @@ export default function () {
             </thead>
             <tbody>
               {myOrders.map((row, index) => (
-                <tr key={index}>
+                <tr key={row.orderId}>
                   <th>{index + 1}</th>
-                  <td>{row.order_index}</td>
+                  <td>{row.orderId}</td>
                   <td>{row.base_address}</td>
                   <td>{row.base_nfts[0] || row.base_snfts[0]}</td>
                   <td>{row.target_address}</td>
                   <td>{row.target_nfts[0] || row.target_snfts[0]}</td>
                   <td>
-                    {row.sell_status ? <button onClick={() => { cancelOrder(row.order_index) }} className="btn btn-xs">CANCEL</button> : null}
+                    {row.sell_status ? <button onClick={() => { cancelOrder(row.orderId) }} className="btn btn-xs">CANCEL</button> : null}
                   </td>
                 </tr>
               ))}

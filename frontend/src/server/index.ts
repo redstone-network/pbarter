@@ -53,8 +53,6 @@ export async function getSFTS(): Promise<NftIem[]> {
     const slot = await SFTS_CONT.methods.slotOf(id).call();
     const symbol = await SFTS_CONT.methods.symbol().call();
     const name = await SFTS_CONT.methods.name().call();
-    console.log('symbol', typeof symbol)
-    console.log('res', id);
     nfts.push({
       type: '3525',
       id: Number(id),
@@ -72,8 +70,8 @@ export async function getNFTS(): Promise<NftIem[]> {
   sum = Number(sum);
   const nfts: NftIem[] = [];
   for (let i = 0; i < sum; i++) {
-    const symbol = await SFTS_CONT.methods.symbol().call();
-    const name = await SFTS_CONT.methods.name().call();
+    const symbol = await NFTS_CONT.methods.symbol().call();
+    const name = await NFTS_CONT.methods.name().call();
     nfts.push({
       type: '721',
       id: '',
@@ -133,11 +131,17 @@ export async function getOrderList() {
   const orders = [];
   for (let i = 0; i < showOrders.length; i++) {
     const detail = await PBP_CONT.methods.getOrder(showOrders[i]).call();
-    orders.push(detail);
+    orders.push({
+      ...detail,
+      orderId: showOrders[i]
+    });
   }
   for (let i = 0; i < myOrders.length; i++) {
     const detail = await PBP_CONT.methods.getOrder(myOrders[i]).call();
-    myOrdersShow.push(detail);
+    myOrdersShow.push({
+      ...detail,
+      orderId: myOrders[i]
+    });
   }
 
   return [orders, myOrdersShow];
@@ -153,13 +157,26 @@ export async function cancel(orderId: string): Promise<boolean> {
   return false
 }
 
-export async function buy(orderId: string): Promise<boolean> {
+export async function buy(address: string, tokenId: string, orderId: string): Promise<boolean> {
   const myAccount = window.localStorage.getItem('account') || '';
-  const res = await PBP_CONT.methods.buy(orderId).send({
-    from: myAccount,
-  });
-  if (res.status) {
-    return true
+  let approveRes;
+  if (address === SFTS_Address) { 
+    approveRes = await SFTS_CONT.methods.approve(PBP_Address, tokenId).send({
+      from: myAccount,
+    });
+  } else {
+    approveRes =  await NFTS_CONT.methods.approve(PBP_Address, tokenId).send({
+      from: myAccount,
+    });
+  }
+  console.log(approveRes.status)
+  if (approveRes.status) { 
+    const res = await PBP_CONT.methods.buy(orderId).send({
+      from: myAccount,
+    });
+    if (res.status) {
+      return true
+    }
   }
   return false
 }
