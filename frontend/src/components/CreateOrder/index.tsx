@@ -1,7 +1,7 @@
 import { ContractList } from '~/server';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef } from 'react';
 import { createOrder } from '~/server';
-import { toast } from 'react-toastify';
+import { toast, Id } from 'react-toastify';
 
 type AppProps = {
   show: boolean;
@@ -9,6 +9,7 @@ type AppProps = {
 };
 
 export default function ({ show, close }: AppProps) {
+  const toastId = useRef<Id | null>(null)
   const [baseAddr, setBaseAddr] = useState('');
   const [targetAddr, setTargetAddr] = useState('');
   const [baseId, setBaseId] = useState('');
@@ -50,10 +51,15 @@ export default function ({ show, close }: AppProps) {
     setTargetId('');
   }
   const submit = async () => {
+    toastId.current = toast.loading('Please wait....', {
+      pauseOnFocusLoss: false
+    })
     try {
       const res = await createOrder(baseAddr, targetAddr, baseId, targetId)
       closeMod()
-      toast.success('create order successful', {
+      toast.update(toastId.current, {
+        render: 'create order successful',
+        type: toast.TYPE.SUCCESS,
         autoClose: 2000,
         isLoading: false,
         pauseOnFocusLoss: false,
@@ -62,7 +68,9 @@ export default function ({ show, close }: AppProps) {
       })
     } catch (e) {
       console.log(e)
-      toast.error('create order error', {
+      toast.update(toastId.current, {
+        render: 'create order error',
+        type: toast.TYPE.ERROR,
         autoClose: 2000,
         isLoading: false,
         pauseOnFocusLoss: false,

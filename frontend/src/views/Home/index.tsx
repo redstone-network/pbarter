@@ -1,25 +1,26 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { getOrderList, cancel, buy } from '~/server';
 import EmptyIcon from '~/assets/empty.png';
-import { toast } from 'react-toastify';
+import { toast, Id } from 'react-toastify';
 import CreateOrder from '~/components/CreateOrder';
 
 export default function () {
   const [diaShow, setDiaShow] = useState(false);
+  const toastId = useRef<Id | null>(null)
 
   const toggle = useCallback(() => {
     setDiaShow(!diaShow);
   }, [diaShow]);
+
   const closeDia = useCallback(() => {
     setDiaShow(false);
   }, [diaShow]);
+
   const [list, setList] = useState<any[]>([]);
   const [myOrders, setMyOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const fetchData = async () => {
     const [orders, myList] = await getOrderList();
-    console.log('orders', orders);
-    console.log('myList', myList);
     setLoading(false);
     setList(orders);
     setMyOrders(myList);
@@ -29,29 +30,83 @@ export default function () {
   }, []);
 
   const cancelOrder = async (orderId: string) => {
-    const res = await cancel(orderId);
-    if (res) {
-      toast.success('cancel the order successful', {
+    toastId.current = toast.loading('Please wait....', {
+      pauseOnFocusLoss: false
+    })
+    try {
+      const res = await cancel(orderId);
+      if (res) {
+        toast.update(toastId.current, {
+          render: 'cancel the order successful',
+          type: toast.TYPE.SUCCESS,
+          autoClose: 2000,
+          isLoading: false,
+          pauseOnFocusLoss: false,
+          hideProgressBar: true,
+          closeButton: false
+        })
+        fetchData();
+      } else {
+        toast.update(toastId.current, {
+          render: 'cancel the order fail',
+          type: toast.TYPE.ERROR,
+          autoClose: 2000,
+          isLoading: false,
+          pauseOnFocusLoss: false,
+          hideProgressBar: true,
+          closeButton: false
+        })
+      }
+    } catch (e) {
+      toast.update(toastId.current, {
+        render: 'cancel the order fail',
+        type: toast.TYPE.ERROR,
         autoClose: 2000,
         isLoading: false,
         pauseOnFocusLoss: false,
         hideProgressBar: true,
-        closeButton: false,
-      });
-      fetchData();
+        closeButton: false
+      })
     }
   };
   const buyOrder = async (address: string, tokenId: string, orderId: string) => {
-    const res = await buy(address, tokenId, orderId);
-    if (res) {
-      toast.success('buy the order successful', {
+    toastId.current = toast.loading('Please wait....', {
+      pauseOnFocusLoss: false
+    })
+    try {
+      const res = await buy(address, tokenId, orderId);
+      if (res) {
+        toast.update(toastId.current, {
+          render: 'buy the order successful',
+          type: toast.TYPE.SUCCESS,
+          autoClose: 2000,
+          isLoading: false,
+          pauseOnFocusLoss: false,
+          hideProgressBar: true,
+          closeButton: false
+        })
+        fetchData();
+      } else {
+        toast.update(toastId.current, {
+          render: 'buy the order fail',
+          type: toast.TYPE.ERROR,
+          autoClose: 2000,
+          isLoading: false,
+          pauseOnFocusLoss: false,
+          hideProgressBar: true,
+          closeButton: false
+        })
+      }
+    } catch (e) {
+      toast.update(toastId.current, {
+        render: 'buy the order fail',
+        type: toast.TYPE.ERROR,
         autoClose: 2000,
         isLoading: false,
         pauseOnFocusLoss: false,
         hideProgressBar: true,
-        closeButton: false,
-      });
-      fetchData();
+        closeButton: false
+      })
     }
   };
   return (

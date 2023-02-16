@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getNFTS, getSFTS } from '~/server';
 import { NftIem } from '~/server/type';
 import EmptyIcon from '~/assets/empty.png';
@@ -6,6 +6,7 @@ import EmptyIcon from '~/assets/empty.png';
 export default function () {
   const [list, setList] = useState<NftIem[]>([]);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       const [nfts, sfts] = await Promise.all([getNFTS(), getSFTS()]);
