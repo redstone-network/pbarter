@@ -42,12 +42,17 @@ export default function ({ show, close }: AppProps) {
     },
     [baseAddr]
   );
-
+  const closeMod = () => {
+    close();
+    setBaseAddr('');
+    setTargetAddr('');
+    setBaseId('');
+    setTargetId('');
+  }
   const submit = async () => {
     try {
       const res = await createOrder(baseAddr, targetAddr, baseId, targetId)
-      console.log(res)
-      console.log(res)
+      closeMod()
       toast.success('create order successful', {
         autoClose: 2000,
         isLoading: false,
@@ -65,14 +70,6 @@ export default function ({ show, close }: AppProps) {
         closeButton: false
       })
     }
-  }
-
-  const closeMod = () => {
-    close();
-    setBaseAddr('');
-    setTargetAddr('');
-    setBaseId('');
-    setTargetId('');
   }
   const modalStyle = {
     maxWidth: 'none',

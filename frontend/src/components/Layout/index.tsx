@@ -1,66 +1,19 @@
 import { Outlet } from 'react-router-dom';
 import Nav from './Nav';
-import { ReactComponent as Logo } from '~/assets/home.svg';
-import { ReactComponent as Nft } from '~/assets/order.svg';
-import { useLocation, useNavigate } from 'react-router-dom';
-import CreateOrder from '../CreateOrder';
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 
 export default function () {
-  let location = useLocation();
-  const navigate = useNavigate();
-  const [diaShow, setDiaShow] = useState(false);
-
-  const toggle = useCallback(() => {
-    setDiaShow(!diaShow);
-  }, [diaShow]);
-  const closeDia = useCallback(() => {
-    setDiaShow(false);
-  }, [diaShow]);
-  
-  const menu = [
-    {
-      path: '/',
-      name: 'Order List',
-      icon: Logo,
-    },
-    {
-      path: '/nft',
-      name: 'NFT List',
-      icon: Nft,
-    },
-  ];
   return (
     <div className="w-screen h-screen">
-      <div className="flex w-screen h-screen font-sans bg-primary-content">
-        <div className="flex flex-col flex-shrink-0 w-1/6 h-full font-mono bg-base-100">
-          <div className="flex flex-col w-full px-4 pt-5">
-            <button onClick={toggle} className="flex items-center px-10 text-lg text-white rounded hover:bg-primary-focus bg-primary w-25 h-9">
-              create order
-            </button>
-            <div className="divider"></div>
-          </div>
-          <ul className="flex-1 w-full menu">
-            {menu.map((Item) => {
-              return (
-                <li key={Item.path} onClick={() => navigate(Item.path)}>
-                  <a className={location.pathname === Item.path ? 'active' : ''}>
-                    <Item.icon className="w-5 h-5"/>
-                    {Item.name}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <div className="flex flex-col flex-grow-0 w-5/6">
+      <div className="flex flex-col w-screen h-screen bg-primary-content">
+        <div className="font-mono bg-base-100">
           <Nav />
-          <div className="flex-1 p-6 overflow-y-auto">
-            <Outlet />
-          </div>
+        </div>
+        <div className="flex flex-col flex-grow-0 overflow-y-auto p-5">
+          <Outlet />
         </div>
       </div>
-      <CreateOrder show={diaShow} close={closeDia} />
     </div>
   );
 }
+
