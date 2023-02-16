@@ -11,7 +11,7 @@ export default function () {
       const [nfts, sfts] = await Promise.all([getNFTS(), getSFTS()]);
       setLoading(false);
       console.log(nfts, sfts);
-      setList([...nfts, ...sfts]);
+      setList([...sfts,...nfts]);
     };
 
     fetchData();
