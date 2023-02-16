@@ -49,11 +49,19 @@ export async function getSFTS(): Promise<NftIem[]> {
   sum = Number(sum);
   const nfts: NftIem[] = [];
   for (let i = 0; i < sum; i++) {
-    const res = await SFTS_CONT.methods.tokenOfOwnerByIndex(myAccount, i).call();
-    console.log('res', res);
+    const id = await SFTS_CONT.methods.tokenOfOwnerByIndex(myAccount, i).call();
+    const slot = await SFTS_CONT.methods.slotOf(id).call();
+    const symbol = await SFTS_CONT.methods.symbol().call();
+    const name = await SFTS_CONT.methods.name().call();
+    console.log('symbol', typeof symbol)
+    console.log('res', id);
     nfts.push({
       type: '3525',
-      id: Number(res),
+      id: Number(id),
+      slot,
+      ownerOf: '',
+      symbol,
+      name
     });
   }
   return nfts;
@@ -64,9 +72,15 @@ export async function getNFTS(): Promise<NftIem[]> {
   sum = Number(sum);
   const nfts: NftIem[] = [];
   for (let i = 0; i < sum; i++) {
+    const symbol = await SFTS_CONT.methods.symbol().call();
+    const name = await SFTS_CONT.methods.name().call();
     nfts.push({
       type: '721',
-      id: i + 1,
+      id: '',
+      slot: '',
+      ownerOf: '',
+      symbol,
+      name
     });
   }
   return nfts;
@@ -107,24 +121,26 @@ export async function createOrder(baseAddr: string, targetAddr: string, baseId: 
 }
 export async function getOrderList() {
   const myAccount = window.localStorage.getItem('account') || '';
-  const allOrders: number[] = await PBP_CONT.methods.allOrders().call();
   const unFinishOrders = await PBP_CONT.methods.unFinishedOrders().call();
-  const myOrders = await PBP_CONT.methods.allOwnOrders().call();
-
+  const myOrders = await PBP_CONT.methods.allOwnOrders().call({
+    from: myAccount
+  });
+  console.log('myOrders', myOrders)
+  console.log('unFinishOrders', unFinishOrders)
   const showOrders = unFinishOrders.filter((item: number) => !myOrders.includes(item));
-  const showMyOrders = myOrders;
+
+  const myOrdersShow = [];
   const orders = [];
   for (let i = 0; i < showOrders.length; i++) {
     const detail = await PBP_CONT.methods.getOrder(showOrders[i]).call();
-    orders.push({
-      ...detail,
-      orderId: showOrders[i],
-    });
+    orders.push(detail);
   }
-  console.log('orders', orders);
-  console.log('myOrders', myOrders);
+  for (let i = 0; i < myOrders.length; i++) {
+    const detail = await PBP_CONT.methods.getOrder(myOrders[i]).call();
+    myOrdersShow.push(detail);
+  }
 
-  return [orders, showMyOrders];
+  return [orders, myOrdersShow];
 }
 export async function cancel(orderId: string): Promise<boolean> {
   const myAccount = window.localStorage.getItem('account') || '';

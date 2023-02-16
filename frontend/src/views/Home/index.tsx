@@ -10,6 +10,8 @@ export default function () {
   const [loading, setLoading] = useState(true);
   const fetchData = async () => {
     const [orders, myList] = await getOrderList();
+    console.log('orders', orders)
+    console.log('myList', myList)
     setLoading(false);
     setList(orders);
     setMyOrders(myList);
@@ -73,7 +75,7 @@ export default function () {
                   <td>{row.target_address}</td>
                   <td>{row.target_nfts[0]}</td>
                   <td>
-                    <button onClick={() => {buy(row.order_index)}} className="btn btn-xs btn-primary">BUY</button>
+                    <button onClick={() => {buyOrder(row.order_index)}} className="btn btn-xs btn-primary">BUY</button>
                   </td>
                 </tr>
               ))}
@@ -118,7 +120,7 @@ export default function () {
                   <td>{row.target_address}</td>
                   <td>{row.target_nfts[0]}</td>
                   <td>
-                  <button onClick={() => {cancelOrder(row.order_index)}} className="btn btn-xs">CANCEL</button>
+                    {row.sell_status ? <button onClick={() => { cancelOrder(row.order_index) }} className="btn btn-xs">CANCEL</button> : null}
                   </td>
                 </tr>
               ))}

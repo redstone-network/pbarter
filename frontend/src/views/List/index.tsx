@@ -25,8 +25,10 @@ export default function () {
               <tr>
                 <th></th>
                 <th>Type</th>
-                <th>Id</th>
-                <th>Id</th>
+                <th>NFTId</th>
+                <th>Name</th>
+                <th>Slot</th>
+                <th>symbol</th>
               </tr>
             </thead>
             <tbody>
@@ -35,7 +37,9 @@ export default function () {
                   <th>{index + 1}</th>
                   <td>{row.type}</td>
                   <td>{row.id}</td>
-                  <td>{row.id}</td>
+                  <td>{row.name}</td>
+                  <td>{row.slot}</td>
+                  <td>{row.symbol}</td>
                 </tr>
               ))}
             </tbody>
