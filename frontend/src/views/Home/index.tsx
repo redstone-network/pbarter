@@ -58,10 +58,10 @@ export default function () {
               <tr>
                 <th></th>
                 <th>orderId</th>
-                <th>base address</th>
-                <th>base nfts</th>
-                <th>target address</th>
-                <th>target nfts</th>
+                <th>Base Token Address</th>
+                <th>Base Token ID</th>
+                <th>Target Token Address</th>
+                <th>Target Token ID</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -71,9 +71,9 @@ export default function () {
                   <th>{index + 1}</th>
                   <td>{row.order_index}</td>
                   <td>{row.base_address}</td>
-                  <td>{row.base_nfts[0]}</td>
+                  <td>{row.base_nfts[0] || row.base_snfts[0]}</td>
                   <td>{row.target_address}</td>
-                  <td>{row.target_nfts[0]}</td>
+                  <td>{row.target_nfts[0] || row.target_snfts[0]}</td>
                   <td>
                     <button onClick={() => {buyOrder(row.order_index)}} className="btn btn-xs btn-primary">BUY</button>
                   </td>
@@ -103,10 +103,10 @@ export default function () {
               <tr>
                 <th></th>
                 <th>orderId</th>
-                <th>base address</th>
-                <th>base nfts</th>
-                <th>target address</th>
-                <th>target nfts</th>
+                <th>Base Token Address</th>
+                <th>Base Token ID</th>
+                <th>Target Token Address</th>
+                <th>Target Token ID</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -116,9 +116,9 @@ export default function () {
                   <th>{index + 1}</th>
                   <td>{row.order_index}</td>
                   <td>{row.base_address}</td>
-                  <td>{row.base_nfts[0]}</td>
+                  <td>{row.base_nfts[0] || row.base_snfts[0]}</td>
                   <td>{row.target_address}</td>
-                  <td>{row.target_nfts[0]}</td>
+                  <td>{row.target_nfts[0] || row.target_snfts[0]}</td>
                   <td>
                     {row.sell_status ? <button onClick={() => { cancelOrder(row.order_index) }} className="btn btn-xs">CANCEL</button> : null}
                   </td>
