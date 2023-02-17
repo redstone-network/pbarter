@@ -9,7 +9,7 @@ import { ReactComponent as Nft } from '~/assets/order.svg';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const MMSDK = new MetaMaskSDK();
-const ethereum = MMSDK.getProvider(); // You can also access via window.ethereum
+const ethereum = MMSDK.getProvider();
 const menu = [
   {
     path: '/',
@@ -46,6 +46,7 @@ function Nav() {
   ethereum.on('accountsChanged', function (accounts: string[]) {
     window.localStorage.setItem('account', accounts[0]);
     setAccount(accounts[0]);
+    window.location.reload();
   });
 
   const logout = () => {
@@ -54,16 +55,16 @@ function Nav() {
   };
 
   return (
-    <div className="box-border flex items-center w-full h-20 px-4 shadow-md bg-base-100 justify-between">
-      <div className="flex-1 flex">
+    <div className="box-border flex items-center justify-between w-full h-20 px-4 shadow-md bg-base-100">
+      <div className="flex flex-1">
         <div className="flex items-center">
           <Pbarter className="w-10 h-10" />
-          <a className="font-mono px-2 text-2xl font-bold normal-case ">PBarter</a>
+          <a className="px-2 font-mono text-2xl font-bold normal-case ">PBarter</a>
         </div>
         <ul className="flex items-center ml-20 cursor-pointer">
           {menu.map((Item) => {
             return (
-              <li className="font-medium mr-8 text-xl" key={Item.path} onClick={() => navigate(Item.path)}>
+              <li className="mr-8 text-xl font-medium" key={Item.path} onClick={() => navigate(Item.path)}>
                 <a className={location.pathname === Item.path ? 'text-primary' : ''}>{Item.name}</a>
               </li>
             );
@@ -78,7 +79,7 @@ function Nav() {
                 <img className="w-full" src={Wallet} />
               </div>
             ) : (
-              <div className="bg-neutral-focus text-neutral-content rounded-full w-10">
+              <div className="w-10 rounded-full bg-neutral-focus text-neutral-content">
                   <span>{ account.slice(-2)}</span>
               </div>
             )}
