@@ -182,6 +182,7 @@ export default function () {
                 <th>Base Token ID</th>
                 <th>Target Token Address</th>
                 <th>Target Token ID</th>
+                <th>Status</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -194,6 +195,7 @@ export default function () {
                   <td>{row.base_nfts[0] || row.base_snfts[0]}</td>
                   <td>{row.target_address}</td>
                   <td>{row.target_nfts[0] || row.target_snfts[0]}</td>
+                  <td>{row.sell_status ? <div>FOR SALE</div> : <div>TAKED</div> }</td>
                   <td>
                     {row.sell_status ? (
                       <button

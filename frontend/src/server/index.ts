@@ -125,7 +125,7 @@ export async function getOrderList() {
   });
   console.log('myOrders', myOrders)
   console.log('unFinishOrders', unFinishOrders)
-  const showOrders = unFinishOrders.filter((item: number) => !myOrders.includes(item));
+  const showOrders = unFinishOrders;
 
   const myOrdersShow = [];
   const orders = [];
