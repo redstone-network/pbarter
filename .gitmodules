@@ -1,0 +1,6 @@
+[submodule "pbarter-match-api"]
+	path = pbarter-match-api
+	url = https://github.com/redstone-network/pbarter-match-api.git
+[submodule "pbarter-node"]
+	path = pbarter-node
+	url = https://github.com/redstone-network/pbarter-node.git
